@@ -1,0 +1,16 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Public read, authenticated write
+    match /productos/{document=**} {
+      allow read: if request.auth != null || 
+                  (exists(/databases/$(database)/documents/config/info) && 
+                   get(/databases/$(database)/documents/config/info).data.storeActive == true);
+      allow write: if request.auth != null;
+    }
+    match /config/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}

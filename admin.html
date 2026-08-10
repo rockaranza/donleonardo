@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Amanda's Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Login Section -->
+    <div id="login-section" class="container">
+        <div class="card">
+            <h2>Acceso Administrador</h2>
+            <p>Ingresa tus datos para gestionar la tienda.</p>
+            <form id="login-form">
+                <input type="email" id="email" placeholder="Correo electrónico" required>
+                <input type="password" id="password" placeholder="Contraseña" required>
+                <button type="submit" class="btn">Entrar</button>
+            </form>
+            <p id="login-error" class="error hidden">Credenciales incorrectas.</p>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboard-section" class="container hidden">
+        <header class="admin-header">
+            <h2>Panel de Control</h2>
+            <button id="logout-btn" class="btn-outline">Cerrar Sesión</button>
+        </header>
+
+        <!-- Pestañas de Navegación -->
+        <nav class="admin-tabs">
+            <button class="tab-btn active" data-target="section-products">Productos</button>
+            <button class="tab-btn" data-target="section-categories">Categorías</button>
+            <button class="tab-btn" data-target="section-config">Configuración</button>
+        </nav>
+
+        <!-- SECCIÓN: Productos -->
+        <div id="section-products" class="admin-section">
+            <!-- Formulario de Producto -->
+            <div class="card">
+                <h3 id="form-title">Agregar Nuevo Producto</h3>
+                <form id="product-form">
+                    <input type="hidden" id="product-id">
+                    <input type="text" id="p-title" placeholder="Nombre del producto" required>
+                    <input type="text" id="p-desc" placeholder="Descripción corta" required>
+                    <input type="text" id="p-price" placeholder="Precio (Ej: $5.990)" required>
+                    
+                    <select id="p-category" required>
+                        <option value="" disabled selected>Selecciona una categoría</option>
+                        <!-- Se llenará dinámicamente con JS -->
+                    </select>
+
+                    <select id="p-status" required>
+                        <option value="normal" selected>Estado: Normal</option>
+                        <option value="nuevo">Estado: Nuevo</option>
+                        <option value="oferta">Estado: Oferta</option>
+                        <option value="agotado">Estado: Agotado</option>
+                    </select>
+
+                    <input type="text" id="p-offer-price" class="hidden" placeholder="Precio de Oferta (Ej: $4.990)">
+
+                    <input type="file" id="p-image-file" accept="image/*">
+                    <input type="hidden" id="p-image-url">
+                    <small id="image-hint" style="display:block; margin-bottom:1rem; color:#777;">Sube una imagen (obligatorio al crear, opcional al editar).</small>
+                    <div class="form-actions">
+                        <button type="button" id="cancel-edit-btn" class="btn-outline hidden">Cancelar Edición</button>
+                        <button type="submit" id="save-product-btn" class="btn">Guardar Producto</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Lista de Productos -->
+            <div class="card">
+                <h3>Tus Productos</h3>
+                <div id="admin-products-list" class="admin-grid">
+                    <!-- Se llenará con JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: Categorías -->
+        <div id="section-categories" class="admin-section hidden">
+            <div class="card config-card">
+                <h3>Administrar Categorías</h3>
+                <p>Agrega o elimina categorías de la tienda.</p>
+                <div class="input-group">
+                    <input type="text" id="new-category-input" placeholder="Ej: Carteras">
+                    <button id="add-category-btn" class="btn">Agregar</button>
+                </div>
+                <div id="admin-categories-list" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 8px;">
+                    <!-- Se llenará con JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: Configuración -->
+        <div id="section-config" class="admin-section hidden">
+            <div class="card config-card">
+                <h3>Configuración de la Tienda</h3>
+                <p>Información pública que verán tus clientes.</p>
+                
+                <div style="margin-top: 1rem; background: #fff0f5; padding: 15px; border-radius: 8px; border: 2px solid #ffd1dc;">
+                    <label><strong>¿Desactivar mi tienda? (Modo Descanso)</strong></label>
+                    <div style="margin-top: 8px; display: flex; gap: 15px; font-size: 1.1rem;">
+                        <label style="cursor: pointer;"><input type="radio" name="store-disabled" value="yes"> Sí</label>
+                        <label style="cursor: pointer;"><input type="radio" name="store-disabled" value="no" checked> No</label>
+                    </div>
+                    <p id="store-disabled-warning" class="hidden" style="color: #d63384; font-weight: bold; margin-top: 10px;">⚠️ ¡Tu tienda está desactivada!</p>
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <label><strong>Número de WhatsApp:</strong></label>
+                    <input type="text" id="phone-number" placeholder="Ej: 56912345678" style="width: 100%; margin-top: 5px;">
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <label><strong>Instagram (Opcional):</strong></label>
+                    <input type="text" id="instagram-user" placeholder="Ej: @amandas.store" style="width: 100%; margin-top: 5px;">
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <label><strong>Días de Atención:</strong></label>
+                    <div id="days-selector" class="days-container" style="margin-top: 5px;">
+                        <button class="day-btn" data-day="Lu">Lu</button>
+                        <button class="day-btn" data-day="Ma">Ma</button>
+                        <button class="day-btn" data-day="Mi">Mi</button>
+                        <button class="day-btn" data-day="Ju">Ju</button>
+                        <button class="day-btn" data-day="Vi">Vi</button>
+                        <button class="day-btn" data-day="Sa">Sa</button>
+                        <button class="day-btn" data-day="Do">Do</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1rem; display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label><strong>Hora Inicio:</strong></label>
+                        <input type="time" id="time-start" style="width: 100%; margin-top: 5px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label><strong>Hora Fin:</strong></label>
+                        <input type="time" id="time-end" style="width: 100%; margin-top: 5px;">
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <button id="save-info-btn" class="btn" style="width: 100%;">Guardar Configuración General</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Kawaii Modal -->
+    <div id="kawaii-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 id="modal-title">¡Atención! ✨</h3>
+            <p id="modal-message"></p>
+            <div class="modal-buttons">
+                <button id="modal-cancel-btn" class="btn-outline hidden">Cancelar</button>
+                <button id="modal-confirm-btn" class="btn">Aceptar 💖</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="admin.js"></script>
+</body>
+</html>

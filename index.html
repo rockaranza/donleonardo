@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amanda's Store | Tienda Kawaii</title>
+    <meta name="description" content="Bienvenido a Amanda's Store. Encuentra los mejores squishies, lápices kawaii y accesorios juveniles.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <!-- Vista de Tienda Normal -->
+    <div id="store-view">
+        <header class="header">
+            <div class="logo-container">
+                <img src="assets/images/logo.png" alt="Amanda's Store Logo" class="logo">
+                <h1>Amanda's Store</h1>
+            </div>
+            <p class="subtitle">¡Cositas lindas para ti! ✨</p>
+        </header>
+
+        <main class="container">
+            <!-- Filtros de categorías -->
+            <nav class="category-filters" id="category-filters">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+            </nav>
+
+            <section class="products-grid" id="products-grid">
+                <p style="text-align:center; width:100%; grid-column: 1 / -1;">Cargando cositas lindas... ✨</p>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div id="store-info-footer" class="store-info-footer hidden">
+                <p id="store-instagram-text"></p>
+                <p id="store-hours-text"></p>
+            </div>
+            <p>© 2026 Amanda's Store. Hecho con 💖</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;"><a href="terminos.html" style="color: var(--primary-color); text-decoration: none;">Términos de Uso y Propósito Educativo</a></p>
+        </footer>
+    </div>
+
+    <!-- Vista de Descanso (Oculta por defecto) -->
+    <div id="resting-view" class="hidden resting-container">
+        <div class="resting-content">
+            <div class="resting-logo-wrapper">
+                <span class="zzz z1">Z</span>
+                <span class="zzz z2">z</span>
+                <span class="zzz z3">Z</span>
+                <img src="assets/images/logo.png" alt="Amanda's Store Logo" class="logo resting-logo">
+            </div>
+            <h2 class="resting-title">Estoy descansando...</h2>
+            <p class="resting-text">Volveremos pronto con muchas cositas lindas para ti.</p>
+        </div>
+    </div>
+
+    <!-- Kawaii Modal -->
+    <div id="kawaii-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 id="modal-title">¡Atención! ✨</h3>
+            <p id="modal-message"></p>
+            <div class="modal-buttons">
+                <button id="modal-cancel-btn" class="btn-outline hidden">Cancelar</button>
+                <button id="modal-confirm-btn" class="btn">Aceptar 💖</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
