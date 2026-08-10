@@ -1,5 +1,5 @@
 import { db } from './firebase-config.js';
-import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { collection, getDocs, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { showModal } from './modal.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -15,18 +15,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     const storeInstagramText = document.getElementById('store-instagram-text');
     const storeHoursText = document.getElementById('store-hours-text');
 
+    // Escuchar cambios en la configuración en tiempo real (para la vista de descanso)
+    onSnapshot(doc(db, "config", "info"), (docSnap) => {
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            if (data.hasOwnProperty('storeActive') && data.storeActive === false) {
+                // Redirigir a descanso.html
+                window.location.replace('descanso.html');
+            }
+        }
+    });
+
     // 1. Cargar config info (WhatsApp, Instagram, Horarios)
     try {
         const configSnap = await getDoc(doc(db, "config", "info"));
         if (configSnap.exists()) {
             const data = configSnap.data();
-
-            // Modo Descanso
-            if (data.hasOwnProperty('storeActive') && data.storeActive === false) {
-                if(storeView) storeView.remove(); // Elimina todo el HTML de la tienda de la memoria
-                if(restingView) restingView.classList.remove('hidden');
-                return; // Detiene la ejecución del código, no se cargan productos
-            }
 
             if (data.phone) {
                 phoneNumber = data.phone;

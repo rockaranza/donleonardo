@@ -1,7 +1,5 @@
 # 🎀 Tienda Amanda - Documentación del Proyecto 🎀
 
-Este documento sirve como "memoria" y manual técnico del proyecto. Si en el futuro necesitas que otra inteligencia artificial (o yo mismo en una nueva sesión) realice cambios o mejoras, **pídele que lea este archivo primero** para que entienda toda la arquitectura y no rompa nada.
-
 ## 📝 Resumen del Proyecto
 Tienda Amanda es un catálogo en línea con fines pedagógicos y educativos. Su diseño sigue una estética "Kawaii" (colores pastel, bordes redondeados, tipografías amigables y modales animados). No hay pasarela de pago; las compras se coordinan redirigiendo al cliente a WhatsApp.
 

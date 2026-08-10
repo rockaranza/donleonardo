@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descansando | Amanda's Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            /* Force the resting view to take full screen with no scroll */
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="resting-container">
+        <div class="resting-content">
+            <div class="resting-logo-wrapper">
+                <span class="zzz z1">Z</span>
+                <span class="zzz z2">z</span>
+                <span class="zzz z3">Z</span>
+                <img src="assets/images/logo.png" alt="Amanda's Store Logo" class="logo resting-logo">
+            </div>
+            <h2 class="resting-title">Estoy descansando...</h2>
+            <p class="resting-text">Volveremos pronto con muchas cositas lindas para ti.</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (Modular) -->
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Listen to store settings in real time
+        onSnapshot(doc(db, 'config', 'info'), (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                
+                // If store gets activated, redirect back to the main store!
+                if (data.hasOwnProperty('storeActive') && data.storeActive === true) {
+                    window.location.replace('/');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
