@@ -1,62 +1,147 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amanda's Store | Tienda Kawaii</title>
-    <meta name="description" content="Bienvenido a Amanda's Store. Encuentra los mejores squishies, lápices kawaii y accesorios juveniles.">
+    <title>Don Leonardo | Distribuidora de Carne</title>
+    <meta name="description"
+        content="Bienvenido a Don Leonardo. La mejor selección y distribución de carnes de primera calidad.">
+    <meta name="keywords" content="carne, distribuidora de carne, vacuno, cerdo, pollo, Don Leonardo, carnicería">
+    <meta name="author" content="Don Leonardo">
+    <link rel="canonical" href="https://www.donleonardo.cl/">
+
+    <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.donleonardo.cl/">
+    <meta property="og:title" content="Don Leonardo - Distribuidora de Carne">
+    <meta property="og:description" content="La mejor selección y distribución de carnes de primera calidad.">
+    <meta property="og:image" content="https://www.donleonardo.cl/assets/images/logo.png">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Don Leonardo - Distribuidora de Carne">
+    <meta name="twitter:description" content="La mejor selección y distribución de carnes de primera calidad.">
+    <meta name="twitter:image" content="https://www.donleonardo.cl/assets/images/logo.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css?v=9">
 </head>
+
 <body>
-    
+
     <!-- Vista de Tienda Normal -->
     <div id="store-view">
         <header class="header">
             <div class="logo-container">
-                <img src="assets/images/logo.png" alt="Amanda's Store Logo" class="logo">
-                <h1>Amanda's Store</h1>
+                <h1
+                    style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
+                    Don Leonardo - Distribuidora de Carne</h1>
+                <img src="assets/images/logo.png?v=2" alt="Don Leonardo Logo" class="logo">
             </div>
-            <p class="subtitle">¡Cositas lindas para ti! ✨</p>
-        </header>
 
-        <main class="container">
-            <!-- Filtros de categorías -->
             <nav class="category-filters" id="category-filters">
                 <button class="filter-btn active" data-filter="all">Todos</button>
             </nav>
 
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-input" placeholder="Buscar producto">
+            </div>
+        </header>
+
+        <main class="container">
+
             <section class="products-grid" id="products-grid">
-                <p style="text-align:center; width:100%; grid-column: 1 / -1;">Cargando cositas lindas... ✨</p>
+                <p style="text-align:center; width:100%; grid-column: 1 / -1;">Cargando colección...</p>
             </section>
         </main>
 
         <footer class="footer">
-            <div id="store-info-footer" class="store-info-footer hidden">
-                <p id="store-instagram-text"></p>
-                <p id="store-hours-text"></p>
+            <div class="footer-content"
+                style="display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap; text-align: left; max-width: 900px; margin: 0 auto 2rem auto;">
+                <div class="footer-section">
+                    <h4 style="color: var(--accent-color); margin-bottom: 1rem;">Horario</h4>
+                    <p id="footer-hours-container" style="display: flex; align-items: flex-start; gap: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            style="flex-shrink: 0;">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <span id="footer-hours-text" style="color: #FFFFFF;"></span>
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4 style="color: #FFFFFF; margin-bottom: 1rem;">Contacto</h4>
+                    <p id="footer-email-container" style="display: flex; align-items: center; gap: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <a href="mailto:hola@donleonardo.cl" id="footer-email-link"
+                            style="color: #FFFFFF; text-decoration: none;">hola@donleonardo.cl</a>
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4 style="color: #FFFFFF; margin-bottom: 1rem;">Redes Sociales</h4>
+                    <p id="footer-instagram-container" style="display: flex; align-items: center; gap: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                        <a href="https://instagram.com/donleonardocl" id="footer-instagram-link" target="_blank"
+                            style="color: #FFFFFF; text-decoration: none;">@donleonardocl</a>
+                    </p>
+                </div>
             </div>
-            <p>© 2026 Amanda's Store. Hecho con 💖</p>
-            <p style="margin-top: 10px; font-size: 0.9rem;"><a href="terminos.html" style="color: var(--primary-color); text-decoration: none;">Términos de Uso y Propósito Educativo</a></p>
+            <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">
+                <p>© 2026 Don Leonardo. Todos los derechos reservados.</p>
+                <p style="margin-top: 10px; font-size: 0.9rem; color: #FFFFFF;">
+                    Desarrollado por <a href="https://mankelabs.cl" target="_blank"
+                        style="color: var(--accent-color); text-decoration: none; font-weight: 600;">MankeLabs.cl</a>
+                </p>
+            </div>
         </footer>
     </div>
 
 
 
-    <!-- Kawaii Modal -->
-    <div id="kawaii-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h3 id="modal-title">¡Atención! ✨</h3>
-            <p id="modal-message"></p>
-            <div class="modal-buttons">
-                <button id="modal-cancel-btn" class="btn-outline hidden">Cancelar</button>
-                <button id="modal-confirm-btn" class="btn">Aceptar 💖</button>
+    <!-- Promo Modal -->
+    <div class="promo-modal-overlay" id="promo-modal">
+        <div class="promo-modal-content">
+            <button class="promo-close-btn" id="promo-close-btn">&times;</button>
+            <div class="promo-image-container">
+                <img src="" alt="Promoción" id="promo-img" class="hidden">
+            </div>
+            <div class="promo-text-container">
+                <h3 id="promo-title"></h3>
+                <p id="promo-desc"></p>
+                <button class="btn" id="promo-action-btn">¡Lo quiero!</button>
             </div>
         </div>
     </div>
 
-    <script type="module" src="app.js"></script>
+    <!-- Modal Generic -->
+    <div class="modal-overlay" id="generic-modal">
+        <div class="modal-content">
+            <h3 id="modal-title">Atención</h3>
+            <p id="modal-message"></p>
+            <div class="modal-buttons">
+                <button id="modal-cancel-btn" class="btn-outline hidden">Cancelar</button>
+                <button id="modal-confirm-btn" class="btn">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/app.js?v=6"></script>
 </body>
+
 </html>

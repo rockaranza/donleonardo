@@ -1,0 +1,45 @@
+/* Estilos específicos para la página de descanso */
+body.descanso-body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+}
+
+.resting-container {
+    text-align: center;
+    padding: 2rem;
+    max-width: 600px;
+    width: 100%;
+}
+
+.resting-logo-wrapper {
+    margin-bottom: 2rem;
+}
+
+.resting-logo {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+}
+
+.resting-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+    line-height: 1.3;
+}
+
+.resting-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    font-weight: 300;
+}

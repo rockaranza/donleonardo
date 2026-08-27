@@ -21,6 +21,9 @@ const pOfferPrice = document.getElementById('p-offer-price');
 const pImageFile = document.getElementById('p-image-file');
 const pImageUrl = document.getElementById('p-image-url');
 
+const pUnitType = document.getElementById('p-unit-type');
+const pPresentation = document.getElementById('p-presentation');
+
 const formTitle = document.getElementById('form-title');
 const cancelEditBtn = document.getElementById('cancel-edit-btn');
 const saveProductBtn = document.getElementById('save-product-btn');
@@ -28,6 +31,7 @@ const adminProductsList = document.getElementById('admin-products-list');
 
 const phoneInput = document.getElementById('phone-number');
 const instagramInput = document.getElementById('instagram-user');
+const emailInput = document.getElementById('email-address');
 const disabledRadios = document.getElementsByName('store-disabled');
 const disabledWarning = document.getElementById('store-disabled-warning');
 const dayBtns = document.querySelectorAll('.day-btn');
@@ -39,29 +43,36 @@ const newCategoryInput = document.getElementById('new-category-input');
 const addCategoryBtn = document.getElementById('add-category-btn');
 const adminCategoriesList = document.getElementById('admin-categories-list');
 
+// Promo Elements
+const promoForm = document.getElementById('promo-form');
+const promoTitle = document.getElementById('promo-title');
+const promoDesc = document.getElementById('promo-desc');
+const promoMessage = document.getElementById('promo-message');
+const promoImageFile = document.getElementById('promo-image-file');
+const promoImageUrl = document.getElementById('promo-image-url');
+const promoCurrentImageContainer = document.getElementById('promo-current-image-container');
+const promoCurrentImage = document.getElementById('promo-current-image');
+const savePromoBtn = document.getElementById('save-promo-btn');
+const promoRadios = document.getElementsByName('promo-active');
+
 // Tabs
 const tabBtns = document.querySelectorAll('.tab-btn');
 const adminSections = document.querySelectorAll('.admin-section');
 
 tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-        // Remove active from all tabs
         tabBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         
-        // Hide all sections
         adminSections.forEach(sec => sec.classList.add('hidden'));
         
-        // Show target section
         const targetId = btn.dataset.target;
         document.getElementById(targetId).classList.remove('hidden');
     });
 });
 
-// Variables
 let currentCategories = [];
 
-// Condicional para mostrar Precio Oferta
 pStatus.addEventListener('change', () => {
     if (pStatus.value === 'oferta') {
         pOfferPrice.classList.remove('hidden');
@@ -79,6 +90,7 @@ onAuthStateChanged(auth, (user) => {
         loginSection.classList.add('hidden');
         dashboardSection.classList.remove('hidden');
         loadConfig();
+        loadPromo();
         loadCategories();
         loadProducts();
     } else {
@@ -94,9 +106,10 @@ loginForm.addEventListener('submit', async (e) => {
     const password = document.getElementById('password').value;
     try {
         await signInWithEmailAndPassword(auth, email, password);
-        loginError.classList.add('hidden');
+        if (loginError) loginError.classList.add('hidden');
     } catch (error) {
-        loginError.classList.remove('hidden');
+        if (loginError) loginError.classList.remove('hidden');
+        else await showModal("Error al iniciar sesión.", "alert", "Error");
     }
 });
 
@@ -130,6 +143,7 @@ async function loadConfig() {
         const data = configSnap.data();
         if (data.phone) phoneInput.value = data.phone;
         if (data.instagram) instagramInput.value = data.instagram;
+        if (data.email) emailInput.value = data.email;
         if (data.timeStart) timeStart.value = data.timeStart;
         if (data.timeEnd) timeEnd.value = data.timeEnd;
         
@@ -154,7 +168,6 @@ async function loadConfig() {
             });
         }
     } else {
-        // Fallback for old whatsapp doc
         const oldSnap = await getDoc(doc(db, "config", "whatsapp"));
         if (oldSnap.exists()) {
             phoneInput.value = oldSnap.data().number;
@@ -176,6 +189,7 @@ saveInfoBtn.addEventListener('click', async () => {
         storeActive: !isDeactivated,
         phone: phoneInput.value.trim(),
         instagram: instagramInput.value.trim(),
+        email: emailInput.value.trim(),
         days: selectedDays,
         timeStart: timeStart.value,
         timeEnd: timeEnd.value
@@ -185,33 +199,105 @@ saveInfoBtn.addEventListener('click', async () => {
         saveInfoBtn.disabled = true;
         saveInfoBtn.textContent = 'Guardando...';
         await setDoc(doc(db, "config", "info"), infoData);
-        await showModal("Configuración guardada exitosamente.", "alert", "¡Genial! 💖");
+        await showModal("Configuración guardada exitosamente.", "alert", "Éxito");
     } catch (e) {
-        await showModal("Error al guardar: " + e.message, "alert", "Error 😿");
+        await showModal("Error al guardar: " + e.message, "alert", "Error");
     } finally {
         saveInfoBtn.disabled = false;
         saveInfoBtn.textContent = 'Guardar Configuración General';
     }
 });
 
+// Promo Logic
+async function loadPromo() {
+    const promoSnap = await getDoc(doc(db, "config", "promo"));
+    if (promoSnap.exists()) {
+        const data = promoSnap.data();
+        if (data.active) {
+            document.querySelector('input[name="promo-active"][value="yes"]').checked = true;
+        } else {
+            document.querySelector('input[name="promo-active"][value="no"]').checked = true;
+        }
+        
+        promoTitle.value = data.title || '';
+        promoDesc.value = data.desc || '';
+        promoMessage.value = data.message || '';
+        
+        if (data.image) {
+            promoImageUrl.value = data.image;
+            promoCurrentImage.src = data.image;
+            promoCurrentImageContainer.classList.remove('hidden');
+        }
+    }
+}
+
+promoForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    savePromoBtn.disabled = true;
+    savePromoBtn.textContent = 'Guardando...';
+
+    const isActive = document.querySelector('input[name="promo-active"]:checked').value === 'yes';
+    let finalImageUrl = promoImageUrl.value; 
+
+    const file = promoImageFile.files[0];
+    if (file) {
+        try {
+            finalImageUrl = await compressImage(file);
+        } catch (error) {
+            await showModal("Error al procesar la imagen de promo: " + error.message, 'alert', 'Error');
+            savePromoBtn.disabled = false;
+            savePromoBtn.textContent = 'Guardar Promoción';
+            return;
+        }
+    }
+
+    const promoData = {
+        active: isActive,
+        title: promoTitle.value,
+        desc: promoDesc.value,
+        message: promoMessage.value.trim(),
+        image: finalImageUrl
+    };
+
+    try {
+        await setDoc(doc(db, "config", "promo"), promoData);
+        if (finalImageUrl) {
+            promoCurrentImage.src = finalImageUrl;
+            promoCurrentImageContainer.classList.remove('hidden');
+            promoImageUrl.value = finalImageUrl;
+        }
+        promoImageFile.value = '';
+        await showModal("Promoción guardada exitosamente.", "alert", "Éxito");
+    } catch (e) {
+        await showModal("Error al guardar promoción: " + e.message, "alert", "Error");
+    } finally {
+        savePromoBtn.disabled = false;
+        savePromoBtn.textContent = 'Guardar Promoción';
+    }
+});
+
 // Categorías
 async function loadCategories() {
-    const docRef = doc(db, "config", "categorias");
-    const snap = await getDoc(docRef);
-    
-    if (snap.exists()) {
-        currentCategories = snap.data().lista || [];
-    } else {
-        // Inicializar categorías por defecto la primera vez
-        currentCategories = ['squishies', 'accesorios', 'lapices', 'parches', 'otros'];
-        await setDoc(docRef, { lista: currentCategories });
+    try {
+        const docRef = doc(db, "config", "categorias");
+        const snap = await getDoc(docRef);
+        
+        if (snap.exists()) {
+            currentCategories = snap.data().lista || [];
+        } else {
+            currentCategories = ['vacuno', 'cerdo', 'pollo', 'embutidos', 'otros'];
+            await setDoc(docRef, { lista: currentCategories });
+        }
+    } catch (error) {
+        console.error("Error cargando categorías:", error);
+        currentCategories = ['vacuno', 'cerdo', 'pollo', 'embutidos', 'otros'];
+        await showModal("No se pudieron cargar las categorías desde la base de datos. Usando las por defecto.", 'alert', 'Error de Conexión');
     }
     
     renderCategoriesAdmin();
 }
 
 function renderCategoriesAdmin() {
-    // Render list in admin section
     adminCategoriesList.innerHTML = '';
     currentCategories.forEach(cat => {
         const div = document.createElement('div');
@@ -224,7 +310,6 @@ function renderCategoriesAdmin() {
         adminCategoriesList.appendChild(div);
     });
 
-    // Populate product form select
     pCategory.innerHTML = '<option value="" disabled selected>Selecciona una categoría</option>';
     currentCategories.forEach(cat => {
         const opt = document.createElement('option');
@@ -234,18 +319,16 @@ function renderCategoriesAdmin() {
     });
 }
 
-// Global function for onclick in HTML string
 window.deleteCategory = async function(categoryToDelete) {
-    // Validar si existen productos con esta categoría
     const q = query(collection(db, "productos"), where("category", "==", categoryToDelete));
     const snap = await getDocs(q);
     
     if (!snap.empty) {
-        await showModal("Antes debe eliminar los productos de la categoría.", 'alert', '¡Uy! 🛑');
+        await showModal("Antes debe eliminar los productos de esta categoría.", 'alert', 'Atención');
         return;
     }
     
-    const confirmDelete = await showModal(`¿Seguro que quieres borrar la categoría "${categoryToDelete}"?`, 'confirm', '¿Borrar Categoría? 🗑️');
+    const confirmDelete = await showModal(`¿Seguro que quieres borrar la categoría "${categoryToDelete}"?`, 'confirm', '¿Borrar Categoría?');
     if (confirmDelete) {
         currentCategories = currentCategories.filter(c => c !== categoryToDelete);
         await setDoc(doc(db, "config", "categorias"), { lista: currentCategories });
@@ -257,9 +340,8 @@ addCategoryBtn.addEventListener('click', async () => {
     let newCat = newCategoryInput.value.trim().toLowerCase();
     if (!newCat) return;
     
-    // Check si ya existe
     if (currentCategories.includes(newCat)) {
-        await showModal("La categoría ya existe", 'alert', '¡Oops! 😅');
+        await showModal("La categoría ya existe", 'alert', 'Atención');
         return;
     }
     
@@ -267,6 +349,7 @@ addCategoryBtn.addEventListener('click', async () => {
     await setDoc(doc(db, "config", "categorias"), { lista: currentCategories });
     newCategoryInput.value = '';
     renderCategoriesAdmin();
+    await showModal("Categoría '" + newCat + "' creada exitosamente.", 'alert', 'Éxito');
 });
 
 
@@ -296,7 +379,6 @@ async function loadProducts() {
         adminProductsList.appendChild(item);
     });
 
-    // Add listeners to buttons
     document.querySelectorAll('.edit-btn').forEach(btn => {
         btn.addEventListener('click', (e) => editProduct(e.target.dataset.id));
     });
@@ -305,7 +387,6 @@ async function loadProducts() {
     });
 }
 
-// Comprimir Imagen con Canvas a Base64
 function compressImage(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -315,7 +396,6 @@ function compressImage(file) {
             img.src = event.target.result;
             img.onload = () => {
                 const canvas = document.createElement('canvas');
-                // Redimensionar si es muy grande (Max 600px de ancho)
                 const MAX_WIDTH = 600;
                 let width = img.width;
                 let height = img.height;
@@ -329,7 +409,6 @@ function compressImage(file) {
                 canvas.height = height;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
-                // Comprimir a JPEG con 70% de calidad
                 const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
                 resolve(dataUrl);
             };
@@ -339,28 +418,25 @@ function compressImage(file) {
     });
 }
 
-// Add/Edit Product
 productForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     saveProductBtn.disabled = true;
     saveProductBtn.textContent = 'Guardando...';
 
-    let finalImageUrl = pImageUrl.value; // URL de edición actual (Base64)
+    let finalImageUrl = pImageUrl.value; 
 
-    // 1. Procesar imagen si se seleccionó una
     const file = pImageFile.files[0];
     if (file) {
         try {
-            // Comprimir la imagen para que pese muy poco y se guarde directo en la base de datos
             finalImageUrl = await compressImage(file);
         } catch (error) {
-            await showModal("Error al procesar la imagen: " + error.message, 'alert', 'Error 😿');
+            await showModal("Error al procesar la imagen: " + error.message, 'alert', 'Error');
             saveProductBtn.disabled = false;
             saveProductBtn.textContent = 'Guardar Producto';
             return;
         }
     } else if (!finalImageUrl) {
-        await showModal("Debes seleccionar una imagen para el producto.", 'alert', '¡Falta la foto! 📸');
+        await showModal("Debes seleccionar una imagen para el producto.", 'alert', 'Atención');
         saveProductBtn.disabled = false;
         saveProductBtn.textContent = 'Guardar Producto';
         return;
@@ -369,6 +445,8 @@ productForm.addEventListener('submit', async (e) => {
     const productData = {
         title: pTitle.value,
         desc: pDesc.value,
+        unitType: pUnitType.value,
+        presentation: pPresentation.value,
         price: pPrice.value,
         category: pCategory.value,
         status: pStatus.value,
@@ -385,14 +463,13 @@ productForm.addEventListener('submit', async (e) => {
         resetForm();
         loadProducts();
     } catch (error) {
-        await showModal("Error al guardar producto: " + error.message, 'alert', 'Error 😿');
+        await showModal("Error al guardar producto: " + error.message, 'alert', 'Error');
     }
     
     saveProductBtn.disabled = false;
     saveProductBtn.textContent = 'Guardar Producto';
 });
 
-// Edit Mode
 async function editProduct(id) {
     const docSnap = await getDoc(doc(db, "productos", id));
     if (docSnap.exists()) {
@@ -400,14 +477,16 @@ async function editProduct(id) {
         pId.value = id;
         pTitle.value = p.title;
         pDesc.value = p.desc;
+        pUnitType.value = p.unitType || '';
+        pPresentation.value = p.presentation || '';
         pPrice.value = p.price;
         pCategory.value = p.category;
         
         pStatus.value = p.status || 'normal';
-        pStatus.dispatchEvent(new Event('change')); // Para mostrar/ocultar precio oferta
+        pStatus.dispatchEvent(new Event('change')); 
         pOfferPrice.value = p.offerPrice || '';
         
-        pImageUrl.value = p.image; // Guardamos la URL/Base64 actual
+        pImageUrl.value = p.image;
         
         formTitle.textContent = "Editar Producto (Deja la imagen vacía si no quieres cambiarla)";
         cancelEditBtn.classList.remove('hidden');
@@ -415,21 +494,21 @@ async function editProduct(id) {
     }
 }
 
-// Delete
 async function deleteProduct(id) {
-    const confirmDelete = await showModal("¿Seguro que quieres borrar este producto?", 'confirm', '¿Borrar Producto? 🗑️');
+    const confirmDelete = await showModal("¿Seguro que quieres borrar este producto?", 'confirm', '¿Borrar Producto?');
     if (confirmDelete) {
         await deleteDoc(doc(db, "productos", id));
         loadProducts();
     }
 }
 
-// Cancel Edit
 cancelEditBtn.addEventListener('click', resetForm);
 
 function resetForm() {
     productForm.reset();
     pId.value = '';
+    pUnitType.value = '';
+    pPresentation.value = '';
     pImageUrl.value = '';
     formTitle.textContent = "Agregar Nuevo Producto";
     cancelEditBtn.classList.add('hidden');

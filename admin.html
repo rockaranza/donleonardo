@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin | Amanda's Store</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="admin.css">
+    <title>Admin | Don Leonardo</title>
+    <meta name="description" content="Panel de administración de Don Leonardo.">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin.css?v=2">
 </head>
 <body>
     <!-- Login Section -->
     <div id="login-section" class="container">
         <div class="card">
-            <h2>Acceso Administrador</h2>
+            <h2>Panel de Administración Don Leonardo</h2>
             <p>Ingresa tus datos para gestionar la tienda.</p>
             <form id="login-form">
                 <input type="email" id="email" placeholder="Correo electrónico" required>
@@ -33,6 +34,7 @@
         <nav class="admin-tabs">
             <button class="tab-btn active" data-target="section-products">Productos</button>
             <button class="tab-btn" data-target="section-categories">Categorías</button>
+            <button class="tab-btn" data-target="section-promo">Promoción</button>
             <button class="tab-btn" data-target="section-config">Configuración</button>
         </nav>
 
@@ -43,9 +45,17 @@
                 <h3 id="form-title">Agregar Nuevo Producto</h3>
                 <form id="product-form">
                     <input type="hidden" id="product-id">
-                    <input type="text" id="p-title" placeholder="Nombre del producto" required>
+                    <input type="text" id="p-title" placeholder="Nombre del producto (Ej: Anticucho)" required>
                     <input type="text" id="p-desc" placeholder="Descripción corta" required>
-                    <input type="text" id="p-price" placeholder="Precio (Ej: $5.990)" required>
+                    
+                    <div class="input-group">
+                        <input type="text" id="p-price" placeholder="Precio (Ej: $12.990)" required style="flex: 1;">
+                        <input type="text" id="p-unit-type" placeholder="Unidad (Ej: Kilo, Unidad) - Opcional" style="flex: 1;">
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="p-presentation" placeholder="Presentación (Ej: Bolsa de 1 Kilo) - Opcional" style="flex: 1;">
+                    </div>
                     
                     <select id="p-category" required>
                         <option value="" disabled selected>Selecciona una categoría</option>
@@ -56,6 +66,7 @@
                         <option value="normal" selected>Estado: Normal</option>
                         <option value="nuevo">Estado: Nuevo</option>
                         <option value="oferta">Estado: Oferta</option>
+                        <option value="destacado">Estado: Destacado</option>
                         <option value="agotado">Estado: Agotado</option>
                     </select>
 
@@ -80,13 +91,58 @@
             </div>
         </div>
 
+        <!-- SECCIÓN: PROMOCIÓN -->
+        <section id="section-promo" class="admin-section hidden">
+            <h2 class="section-title">Promoción Emergente</h2>
+            <div class="card">
+                <form id="promo-form" class="form-grid">
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Estado de la Promoción</label>
+                        <div class="radio-group" style="display: flex; gap: 20px; align-items: center; margin-top: 10px;">
+                            <label><input type="radio" name="promo-active" value="yes"> Activar Promoción</label>
+                            <label><input type="radio" name="promo-active" value="no" checked> Desactivada</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="promo-title">Título de la Promoción</label>
+                        <input type="text" id="promo-title" placeholder="Ej: ¡Gran Descuento de Fin de Semana!">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="promo-image-file">Imagen Promocional</label>
+                        <input type="file" id="promo-image-file" accept="image/*">
+                        <input type="hidden" id="promo-image-url">
+                        <small style="color: #65676B; display: block; margin-top: 5px;">Deja vacío si no quieres cambiar la imagen actual.</small>
+                        <div id="promo-current-image-container" class="hidden" style="margin-top: 15px;">
+                            <p style="font-size: 0.9rem; margin-bottom: 5px;">Imagen Actual:</p>
+                            <img id="promo-current-image" src="" alt="Promo" style="max-width: 200px; border-radius: 8px; border: 1px solid #ddd;">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label for="promo-desc">Texto Descriptivo</label>
+                        <textarea id="promo-desc" rows="3" placeholder="Descripción breve de la promoción..."></textarea>
+                    </div>
+                    
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label for="promo-message">Mensaje para WhatsApp (Opcional)</label>
+                        <input type="text" id="promo-message" placeholder="Ej: Hola, quiero hacer un pedido de anticuchos...">
+                        <small style="color: #65676B; display: block; margin-top: 5px;">Si se deja en blanco, el botón del modal dirá "Cerrar" y no enviará mensaje.</small>
+                    </div>
+
+                    <button type="submit" id="save-promo-btn" class="btn" style="grid-column: 1 / -1;">Guardar Promoción</button>
+                </form>
+            </div>
+        </section>
+
         <!-- SECCIÓN: Categorías -->
         <div id="section-categories" class="admin-section hidden">
             <div class="card config-card">
                 <h3>Administrar Categorías</h3>
                 <p>Agrega o elimina categorías de la tienda.</p>
                 <div class="input-group">
-                    <input type="text" id="new-category-input" placeholder="Ej: Carteras">
+                    <input type="text" id="new-category-input" placeholder="Ej: Cortes Premium">
                     <button id="add-category-btn" class="btn">Agregar</button>
                 </div>
                 <div id="admin-categories-list" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 8px;">
@@ -101,13 +157,13 @@
                 <h3>Configuración de la Tienda</h3>
                 <p>Información pública que verán tus clientes.</p>
                 
-                <div style="margin-top: 1rem; background: #fff0f5; padding: 15px; border-radius: 8px; border: 2px solid #ffd1dc;">
+                <div style="margin-top: 1rem; background: var(--card-bg); padding: 15px; border-radius: 4px; border: 1px solid var(--border-color);">
                     <label><strong>¿Desactivar mi tienda? (Modo Descanso)</strong></label>
                     <div style="margin-top: 8px; display: flex; gap: 15px; font-size: 1.1rem;">
                         <label style="cursor: pointer;"><input type="radio" name="store-disabled" value="yes"> Sí</label>
                         <label style="cursor: pointer;"><input type="radio" name="store-disabled" value="no" checked> No</label>
                     </div>
-                    <p id="store-disabled-warning" class="hidden" style="color: #d63384; font-weight: bold; margin-top: 10px;">⚠️ ¡Tu tienda está desactivada!</p>
+                    <p id="store-disabled-warning" class="hidden" style="color: #D32F2F; font-weight: bold; margin-top: 10px;">⚠️ ¡Tu tienda está desactivada!</p>
                 </div>
 
                 <div style="margin-top: 1rem;">
@@ -117,7 +173,12 @@
 
                 <div style="margin-top: 1rem;">
                     <label><strong>Instagram (Opcional):</strong></label>
-                    <input type="text" id="instagram-user" placeholder="Ej: @amandas.store" style="width: 100%; margin-top: 5px;">
+                    <input type="text" id="instagram-user" placeholder="Ej: @donleonardocl" style="width: 100%; margin-top: 5px;">
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <label><strong>Correo Electrónico (Opcional):</strong></label>
+                    <input type="email" id="email-address" placeholder="Ej: hola@donleonardo.cl" style="width: 100%; margin-top: 5px;">
                 </div>
 
                 <div style="margin-top: 1rem;">
@@ -152,18 +213,18 @@
 
     </div>
 
-    <!-- Kawaii Modal -->
+    <!-- Alert Modal -->
     <div id="kawaii-modal" class="modal-overlay hidden">
         <div class="modal-content">
-            <h3 id="modal-title">¡Atención! ✨</h3>
+            <h3 id="modal-title">Atención</h3>
             <p id="modal-message"></p>
             <div class="modal-buttons">
                 <button id="modal-cancel-btn" class="btn-outline hidden">Cancelar</button>
-                <button id="modal-confirm-btn" class="btn">Aceptar 💖</button>
+                <button id="modal-confirm-btn" class="btn">Aceptar</button>
             </div>
         </div>
     </div>
 
-    <script type="module" src="admin.js"></script>
+    <script type="module" src="assets/js/admin.js?v=3"></script>
 </body>
 </html>
