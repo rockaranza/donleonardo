@@ -688,6 +688,7 @@ h1, h2, h3, h4, .subtitle, .product-title {
     }
 
     .category-filters {
+        order: 1;
         flex: 0 0 auto;
         justify-content: flex-start;
         gap: 15px;
@@ -698,6 +699,7 @@ h1, h2, h3, h4, .subtitle, .product-title {
     }
 
     .search-container {
+        order: 2;
         flex: 0 0 auto;
         margin-top: 0;
     }
