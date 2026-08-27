@@ -682,8 +682,8 @@ h1, h2, h3, h4, .subtitle, .product-title {
         padding: 0;
         z-index: auto;
         flex: 2;
-        justify-content: flex-end;
-        gap: 30px;
+        justify-content: space-between;
+        gap: 20px;
         border-radius: 0;
     }
 

@@ -27,6 +27,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     const closeSheetBtn = document.getElementById('close-sheet-btn');
     const fabFilter = document.getElementById('fab-filter');
 
+    // Fix iOS fixed position bug by moving headerControls out of sticky header on mobile
+    function moveControls() {
+        if (window.innerWidth >= 768) {
+            if (headerControls.parentElement !== header) {
+                header.appendChild(headerControls);
+            }
+        } else {
+            if (headerControls.parentElement === header) {
+                document.body.appendChild(headerControls);
+            }
+        }
+    }
+    window.addEventListener('resize', moveControls);
+    moveControls(); // Run on load
+
     function openBottomSheet() {
         if (headerControls && bottomSheetOverlay) {
             headerControls.classList.add('open');
