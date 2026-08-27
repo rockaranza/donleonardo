@@ -51,6 +51,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Fix iOS fixed position bug by moving headerControls out of sticky header on mobile
     function moveControls() {
+        if (!headerControls || !header) return;
+        
         if (window.innerWidth >= 768) {
             if (headerControls.parentElement !== header) {
                 header.appendChild(headerControls);
