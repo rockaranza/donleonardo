@@ -120,6 +120,10 @@ h1, h2, h3, h4, .subtitle, .product-title {
 }
 
 /* Category Filters & Search */
+.desktop-only {
+    display: none;
+}
+
 
 .search-input {
     width: 100%;
@@ -702,10 +706,51 @@ h1, h2, h3, h4, .subtitle, .product-title {
         order: 2;
         flex: 0 0 auto;
         margin-top: 0;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .desktop-only {
+        display: flex !important;
+    }
+
+    .desktop-search-btn {
+        background: none;
+        border: none;
+        color: var(--text-dark);
+        cursor: pointer;
+        padding: 8px;
+        transition: color 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .desktop-search-btn:hover {
+        color: var(--primary-color);
     }
 
     .search-input {
-        max-width: 220px; 
+        width: 0;
+        opacity: 0;
+        padding: 0;
+        border: none;
+        pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: absolute;
+        right: 40px; 
+        max-width: none;
+        background-color: var(--card-bg);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .search-container.active .search-input {
+        width: 250px;
+        opacity: 1;
+        padding: 12px 24px;
+        border: 1px solid var(--primary-color);
+        pointer-events: auto;
     }
 }
 

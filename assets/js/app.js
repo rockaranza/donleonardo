@@ -21,6 +21,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    // Desktop Search Logic
+    const desktopSearchBtn = document.getElementById('desktop-search-btn');
+    const searchContainer = document.getElementById('search-container');
+    const searchInput = document.getElementById('search-input');
+
+    if (desktopSearchBtn && searchContainer) {
+        desktopSearchBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            searchContainer.classList.toggle('active');
+            if (searchContainer.classList.contains('active')) {
+                searchInput.focus();
+            }
+        });
+
+        // Close search when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!searchContainer.contains(e.target) && searchContainer.classList.contains('active')) {
+                searchContainer.classList.remove('active');
+            }
+        });
+    }
+
     // Bottom Sheet Logic
     const headerControls = document.getElementById('header-controls');
     const bottomSheetOverlay = document.getElementById('bottom-sheet-overlay');

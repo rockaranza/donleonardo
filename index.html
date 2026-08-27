@@ -29,7 +29,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;600&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css?v=10">
+    <link rel="stylesheet" href="assets/css/styles.css?v=11">
 </head>
 
 <body>
@@ -51,7 +51,13 @@
                     <button class="close-sheet-btn" id="close-sheet-btn">&times;</button>
                 </div>
                 
-                <div class="search-container">
+                <div class="search-container" id="search-container">
+                    <button class="desktop-search-btn desktop-only" id="desktop-search-btn" aria-label="Abrir buscador">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
                     <input type="text" id="search-input" class="search-input" placeholder="Buscar producto">
                 </div>
 
@@ -158,7 +164,7 @@
         </div>
     </div>
 
-    <script type="module" src="assets/js/app.js?v=7"></script>
+    <script type="module" src="assets/js/app.js?v=8"></script>
 </body>
 
 </html>
