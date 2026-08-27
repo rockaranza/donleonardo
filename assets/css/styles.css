@@ -647,14 +647,14 @@ h1, h2, h3, h4, .subtitle, .product-title {
 /* Desktop Header Layout */
 @media (min-width: 768px) {
     .header {
-        padding: 1rem 4rem;
+        padding: 1rem max(1.5rem, calc((100vw - 1200px) / 2 + 1.5rem));
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
     }
 
     .header.scrolled {
-        padding: 0.5rem 4rem;
+        padding: 0.5rem max(1.5rem, calc((100vw - 1200px) / 2 + 1.5rem));
     }
     
     .logo-container {
