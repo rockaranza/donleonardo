@@ -651,6 +651,7 @@ h1, h2, h3, h4, .subtitle, .product-title {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
     }
 
     .header.scrolled {
@@ -685,16 +686,18 @@ h1, h2, h3, h4, .subtitle, .product-title {
         box-shadow: none;
         padding: 0;
         z-index: auto;
-        flex: 2;
-        justify-content: space-between;
+        flex: 2 1 auto;
+        justify-content: flex-end;
+        flex-wrap: wrap;
         gap: 20px;
         border-radius: 0;
     }
 
     .category-filters {
         order: 1;
-        flex: 0 0 auto;
-        justify-content: flex-start;
+        flex: 1 1 auto;
+        justify-content: flex-end;
+        flex-wrap: wrap;
         gap: 15px;
         margin-top: 0;
         width: auto;
@@ -713,6 +716,7 @@ h1, h2, h3, h4, .subtitle, .product-title {
         transition: all 0.3s ease;
         padding: 0;
         border: 1px solid transparent;
+        width: auto;
     }
 
     .search-container.active {
@@ -755,9 +759,9 @@ h1, h2, h3, h4, .subtitle, .product-title {
     }
 
     .search-container.active .search-input {
-        width: 250px;
+        width: 150px;
         opacity: 1;
-        padding: 12px 20px 12px 0;
+        padding: 12px 15px 12px 0;
         border: none;
         pointer-events: auto;
     }
