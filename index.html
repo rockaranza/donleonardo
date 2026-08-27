@@ -44,14 +44,31 @@
                 <img src="assets/images/logo.png?v=2" alt="Don Leonardo Logo" class="logo">
             </div>
 
-            <nav class="category-filters" id="category-filters">
-                <button class="filter-btn active" data-filter="all">Todos</button>
-            </nav>
+            <div class="header-controls" id="header-controls">
+                <div class="bottom-sheet-handle mobile-only"></div>
+                <div class="bottom-sheet-header mobile-only">
+                    <h3>Filtros y Búsqueda</h3>
+                    <button class="close-sheet-btn" id="close-sheet-btn">&times;</button>
+                </div>
+                
+                <div class="search-container">
+                    <input type="text" id="search-input" class="search-input" placeholder="Buscar producto">
+                </div>
 
-            <div class="search-container">
-                <input type="text" id="search-input" class="search-input" placeholder="Buscar producto">
+                <nav class="category-filters" id="category-filters">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                </nav>
             </div>
         </header>
+
+        <!-- Botón flotante para celular -->
+        <button class="fab-filter mobile-only" id="fab-filter" aria-label="Filtros">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+            Filtrar
+        </button>
+        <div class="bottom-sheet-overlay" id="bottom-sheet-overlay"></div>
 
         <main class="container">
 

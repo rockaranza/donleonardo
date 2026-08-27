@@ -21,6 +21,32 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    // Bottom Sheet Logic
+    const headerControls = document.getElementById('header-controls');
+    const bottomSheetOverlay = document.getElementById('bottom-sheet-overlay');
+    const closeSheetBtn = document.getElementById('close-sheet-btn');
+    const fabFilter = document.getElementById('fab-filter');
+
+    function openBottomSheet() {
+        if (headerControls && bottomSheetOverlay) {
+            headerControls.classList.add('open');
+            bottomSheetOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeBottomSheet() {
+        if (headerControls && bottomSheetOverlay) {
+            headerControls.classList.remove('open');
+            bottomSheetOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    }
+
+    if (fabFilter) fabFilter.addEventListener('click', openBottomSheet);
+    if (closeSheetBtn) closeSheetBtn.addEventListener('click', closeBottomSheet);
+    if (bottomSheetOverlay) bottomSheetOverlay.addEventListener('click', closeBottomSheet);
+
     // Escuchar cambios en la configuración en tiempo real (para la vista de descanso)
     onSnapshot(doc(db, "config", "info"), (docSnap) => {
         if (docSnap.exists()) {
@@ -191,6 +217,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.target.classList.add('active');
             currentFilter = e.target.dataset.filter;
             applyFilters();
+            closeBottomSheet();
         }
     });
 
