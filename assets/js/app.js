@@ -221,7 +221,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Attach listeners a los botones de categoría (incluyendo el "Todos" por defecto)
     // Usamos event delegation en el contenedor padre
-    const searchInput = document.getElementById('search-input');
     let currentFilter = 'all';
 
     function applyFilters() {
